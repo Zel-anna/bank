@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slider, Select, MenuItem, AppBar, Tabs, Tab } from '@material-ui/core';
+import { Slider, Select, MenuItem } from '@material-ui/core';
 
   
   const markLoanAmount = [
@@ -50,54 +50,64 @@ import { Slider, Select, MenuItem, AppBar, Tabs, Tab } from '@material-ui/core';
 
 export default function Forms() {
 
-    //Объявляем новую переменную состояния value
-  const [value, setValue]=React.useState(0);
-
-  const handleTabs = (event, value) => {
-    setValue(value);
-    console.log("TabsValue: " + value);
-  };
-  const [bank, setBank] = React.useState(1)
-  const updateBank = (event, bank) => {
-    console.log(event.target.value);  
-    setBank(event.target.value);
+  const [loanOffer, setLoanOffer] = React.useState("Cash") 
+  const updateOffer = (event, loanOffer) => {
+    console.log(event.target.value);
+    setLoanOffer(event.target.value);
   }
-  const getValueSlider = (event, value) => {
-    console.log(value);
+
+  const arOptions = ['Cash', 'Credit cards', 'Mortgage', 'Car loan', 'Business loan'];
+  const [value, setValue] = React.useState(0);
+  const options = arOptions.map((text, index) => {
+      return <option key={index} value={index}>{text}</option>;
+  });
+
+  const arBanks = ['Sberbank', 'VTB Bank', 'Alfa-bank'];
+  const [bank, setBank] = React.useState(0);
+  const banks = arBanks.map((text, index) => {
+      return <option key={index} value={index}>{text}</option>;
+  });
+
+  let sliderAmountValue = 5000000;
+  const handleSliderAmountChanged = (event, valueSlider) => {
+    sliderAmountValue = valueSlider;
+  };
+
+  let sliderTermValue = 15;
+  const handleSliderTermChanged = (event, valueSlider) => {
+    sliderTermValue = valueSlider;
+  };
+
+  const submit = () => {
+      console.log ("--> submit");
+      console.log ("Chosen loan offer = " + arOptions[value]);
+      console.log ("Chosen loan offer = " + loanOffer);  
+      //console.log ("Chosen loan amount = " + valueSlider);
+      console.log ("Chosen loan amount = " + sliderAmountValue);
+      console.log ("Chosen loan term = " + sliderTermValue);
+      console.log ("Chosen bank = " + arBanks[bank]);
   };
     return (
             <div>
                 <h1>Form handling</h1>
                 <h1 id="greeting">Choose your credit</h1>     
-                <p>List of loan offers</p>
+                <p>Choose a loan offer:</p>
 
-                <AppBar position="static">
-                    <Tabs
-                    variant="fullWidth"
-                    value={value}
-                    onChange={handleTabs} 
-                    aria-label="nav tabs example"
-                    >
-                    <Tab label="Cash" />
-                    <Tab label="Credit cards" />
-                    <Tab label="Mortgage" />
-                    <Tab label="Car loan" />
-                    <Tab label="Business loan" />
-                    </Tabs>
-                </AppBar>
-
-                <ul className="categories"> 
-                {/*
-                    categories.map(category => (
-                    <li key={category}>
-                        <button onClick={displayCategoryName}>
-                        <span role="img" aria-label={category} id={category}>{category}</span>
-                        </button>
-                        </li>
-                    ))*/
-                }
-                </ul>
-
+                <select value={value} onChange={(event) => setValue(event.target.value)}>
+                   {options}
+                </select> 
+                <Select value={loanOffer} 
+                        displayEmpty
+                        onChange= {updateOffer}>
+                    <MenuItem value="" disabled>Select a loan offer</MenuItem>
+                    <MenuItem value={"Cash"}>Cash</MenuItem>
+                    <MenuItem value={"Credit cards"}>Credit cards</MenuItem>
+                    <MenuItem value={"Mortgage"}>Mortgage</MenuItem>
+                    <MenuItem value={"Car loan"}>Car loan</MenuItem>
+                    <MenuItem value={"Business loan"}>Business loan</MenuItem>
+                </Select>
+                <br/>      
+                <br/>
 
                 <p>Loan amount (rub):</p>
                 <div className="slider">
@@ -108,35 +118,32 @@ export default function Forms() {
                     marks={markLoanAmount}
                     min={0}
                     max={10000000}
-                    onChange={getValueSlider}
+                    onChange={handleSliderAmountChanged}
                 />
                 </div>
                 <p>Loan term (years):</p>
                 <div className="slider">
                 <Slider 
                     defaultValue={15}
-                    //aria-labelledby="discrete-slider"
                     valueLabelDisplay="auto"
                     step={1}
                     marks={markLoanTerm}
                     min={0}
                     max={30}
-                    onChange={getValueSlider}
+                    onChange={handleSliderTermChanged}
                 />
                 </div>
                 <p>Choose a bank:</p>
+                <select value={bank} onChange={(event) => setBank(event.target.value)}>
+                   {banks}
+                </select>
 
-                <Select value={bank} 
-                        displayEmpty
-                        onChange= {updateBank}>
-                    <MenuItem value="" disabled>Select a bank</MenuItem>
-                    <MenuItem value={1}>Sberbank</MenuItem>
-                    <MenuItem value={2}>VTB Bank</MenuItem>
-                    <MenuItem value={3}>Alfa-bank</MenuItem>
-                </Select>
+                <br/>
+
+
                 <br/>      
                 <br/>
-                <button>Submit</button>
+                <button onClick = {submit}>Submit</button>
             </div>
         );
 }
