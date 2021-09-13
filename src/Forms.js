@@ -1,6 +1,5 @@
 import React from 'react';
-import { Slider, Select, MenuItem } from '@material-ui/core';
-
+import { Slider, Select, MenuItem, Grid, TextField, Button } from '@material-ui/core';
   
   const markLoanAmount = [
     {
@@ -52,15 +51,8 @@ export default function Forms() {
 
   const [loanOffer, setLoanOffer] = React.useState("Cash") 
   const updateOffer = (event, loanOffer) => {
-    console.log(event.target.value);
     setLoanOffer(event.target.value);
   }
-
-  const arOptions = ['Cash', 'Credit cards', 'Mortgage', 'Car loan', 'Business loan'];
-  const [value, setValue] = React.useState(0);
-  const options = arOptions.map((text, index) => {
-      return <option key={index} value={index}>{text}</option>;
-  });
 
   const arBanks = ['Sberbank', 'VTB Bank', 'Alfa-bank'];
   const [bank, setBank] = React.useState(0);
@@ -68,82 +60,98 @@ export default function Forms() {
       return <option key={index} value={index}>{text}</option>;
   });
 
-  let sliderAmountValue = 5000000;
+  const [sliderAmountValue, setAmount] = React.useState(5000000);
   const handleSliderAmountChanged = (event, valueSlider) => {
-    sliderAmountValue = valueSlider;
+    setAmount(valueSlider);
   };
 
-  let sliderTermValue = 15;
+  //let sliderTermValue = 15;
+  const [sliderTermValue, setTerm] = React.useState(15);
   const handleSliderTermChanged = (event, valueSlider) => {
-    sliderTermValue = valueSlider;
+    //sliderTermValue = valueSlider;
+    setTerm(valueSlider);
   };
 
+  const [valueName, setName] = React.useState('');
+  const [valueAge, setAge] = React.useState('');
+  const [valueEmail, setEmail] = React.useState('');
+  
   const submit = () => {
       console.log ("--> submit");
-      console.log ("Chosen loan offer = " + arOptions[value]);
       console.log ("Chosen loan offer = " + loanOffer);  
-      //console.log ("Chosen loan amount = " + valueSlider);
       console.log ("Chosen loan amount = " + sliderAmountValue);
       console.log ("Chosen loan term = " + sliderTermValue);
       console.log ("Chosen bank = " + arBanks[bank]);
+      console.log ("Entered name = " + valueName);
+      console.log ("Entered age = " + valueAge);
+      console.log ("Entered Email = " + valueEmail);
   };
     return (
-            <div>
-                <h1>Form handling</h1>
-                <h1 id="greeting">Choose your credit</h1>     
-                <p>Choose a loan offer:</p>
+          <Grid container spacing={2}>
+            <Grid item md={4} >
+              <h1>Requestor's data:</h1>
+              <TextField id="inputName" label="Name" variant="outlined" onChange={(event) => setName(event.target.value)} /><br/><br/>
+              <TextField id="inputAge" label="Age" variant="outlined" onChange={(event) => setAge(event.target.value)}  /><br/><br/>
+              <TextField id="inputEmail" label="Email" variant="outlined" onChange={(event) => setEmail(event.target.value)} />
+            </Grid>
+            <Grid item md={4}>
+              <div>
+                  <h1 id="greeting">Choose your credit</h1>     
+                  <p>Choose a loan offer:</p>
 
-                <select value={value} onChange={(event) => setValue(event.target.value)}>
-                   {options}
-                </select> 
-                <Select value={loanOffer} 
-                        displayEmpty
-                        onChange= {updateOffer}>
-                    <MenuItem value="" disabled>Select a loan offer</MenuItem>
-                    <MenuItem value={"Cash"}>Cash</MenuItem>
-                    <MenuItem value={"Credit cards"}>Credit cards</MenuItem>
-                    <MenuItem value={"Mortgage"}>Mortgage</MenuItem>
-                    <MenuItem value={"Car loan"}>Car loan</MenuItem>
-                    <MenuItem value={"Business loan"}>Business loan</MenuItem>
-                </Select>
-                <br/>      
-                <br/>
+                  <Select value={loanOffer} 
+                          displayEmpty
+                          onChange= {updateOffer}>
+                      <MenuItem value="" disabled>Select a loan offer</MenuItem>
+                      <MenuItem value={"Cash"}>Cash</MenuItem>
+                      <MenuItem value={"Credit cards"}>Credit cards</MenuItem>
+                      <MenuItem value={"Mortgage"}>Mortgage</MenuItem>
+                      <MenuItem value={"Car loan"}>Car loan</MenuItem>
+                      <MenuItem value={"Business loan"}>Business loan</MenuItem>
+                  </Select>
+                  <br/>      
+                  <br/>
 
-                <p>Loan amount (rub):</p>
-                <div className="slider">
-                <Slider 
-                    defaultValue={5000000}
-                    valueLabelDisplay="auto"
-                    step={500000}
-                    marks={markLoanAmount}
-                    min={0}
-                    max={10000000}
-                    onChange={handleSliderAmountChanged}
-                />
-                </div>
-                <p>Loan term (years):</p>
-                <div className="slider">
-                <Slider 
-                    defaultValue={15}
-                    valueLabelDisplay="auto"
-                    step={1}
-                    marks={markLoanTerm}
-                    min={0}
-                    max={30}
-                    onChange={handleSliderTermChanged}
-                />
-                </div>
-                <p>Choose a bank:</p>
-                <select value={bank} onChange={(event) => setBank(event.target.value)}>
-                   {banks}
-                </select>
+                  <p>Loan amount (rub):</p>
+                  <div className="slider">
+                  <Slider 
+                      defaultValue={5000000}
+                      valueLabelDisplay="auto"
+                      step={500000}
+                      marks={markLoanAmount}
+                      min={0}
+                      max={10000000}
+                      onChange={handleSliderAmountChanged}
+                  />
+                  </div>
+                  <p>Loan term (years):</p>
+                  <div className="slider">
+                  <Slider 
+                      defaultValue={15}
+                      valueLabelDisplay="auto"
+                      step={1}
+                      marks={markLoanTerm}
+                      min={0}
+                      max={30}
+                      onChange={handleSliderTermChanged}
+                  />
+                  </div>
+                  <p>Choose a bank:</p>
+                  <select value={bank} onChange={(event) => setBank(event.target.value)}>
+                    {banks}
+                  </select>
 
-                <br/>
+                  <br/>
 
 
-                <br/>      
-                <br/>
-                <button onClick = {submit}>Submit</button>
-            </div>
+                  <br/>      
+                  <br/>
+                  
+                  <Button variant="contained" color="primary" onClick = {submit}>Submit</Button>
+
+              </div>      
+            </Grid>
+          </Grid>
+            
         );
 }
