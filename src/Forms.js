@@ -1,8 +1,10 @@
 import React from 'react';
 import { Slider, Select, MenuItem, Grid, TextField, Button } from '@material-ui/core';
 import { arBanks } from './fixtures.js';
-import { markLoanAmount, markLoanTerm, defaultLoanOffer, defaultBank, defaultAmountValue, defaultTermValue, defaultName, defaultAge, defaultEmail } from './constants.js';
-
+import {
+  markLoanAmount, markLoanTerm, defaultLoanOffer, defaultBank, defaultAmountValue, defaultTermValue,
+  defaultName, defaultAge, defaultEmail, stepAmount, minAmount, maxAmount, stepTerm, minTerm, maxTerm
+} from './constants.js';
 
 
 export default function Forms() {
@@ -21,6 +23,16 @@ export default function Forms() {
   const [valueName, setName] = React.useState(defaultName);
   const [valueAge, setAge] = React.useState(defaultAge);
   const [valueEmail, setEmail] = React.useState(defaultEmail);
+  const [emailDirty, setEmailDirty] = React.useState(false);
+  const [emailError, setEmailError] = React.useState('Email не может быть пустым');
+
+  const blurHandler = (event) => {
+    switch (event.target.name) {
+      case 'email':
+        setEmailDirty(true);
+        break;
+    }
+  }
 
   const submit = () => {
     console.log("--> submit");
@@ -36,9 +48,10 @@ export default function Forms() {
     <Grid container spacing={2}>
       <Grid item md={4} >
         <h1>Requestor's data:</h1>
+        {(emailDirty && emailError) && <div style={{ color: 'red' }}>{emailError}</div>}
         <TextField id="inputName" label="Name" variant="outlined" onChange={(event) => setName(event.target.value)} /><br /><br />
         <TextField id="inputAge" label="Age" variant="outlined" onChange={(event) => setAge(event.target.value)} /><br /><br />
-        <TextField id="inputEmail" label="Email" variant="outlined" onChange={(event) => setEmail(event.target.value)} />
+        <TextField id="inputEmail" name="email" label="Email" variant="outlined" onBlur={e => blurHandler(e)} onChange={(event) => setEmail(event.target.value)} />
       </Grid>
       <Grid item md={4}>
         <div>
@@ -63,10 +76,10 @@ export default function Forms() {
             <Slider
               defaultValue={defaultAmountValue}
               valueLabelDisplay="auto"
-              step={500000}
+              step={stepAmount}
               marks={markLoanAmount}
-              min={0}
-              max={10000000}
+              min={minAmount}
+              max={maxAmount}
               onChange={(_, valueSlider) => setAmount(valueSlider)}
             />
           </div>
@@ -75,10 +88,10 @@ export default function Forms() {
             <Slider
               defaultValue={defaultTermValue}
               valueLabelDisplay="auto"
-              step={1}
+              step={stepTerm}
               marks={markLoanTerm}
-              min={0}
-              max={30}
+              min={minTerm}
+              max={maxTerm}
               onChange={(_, valueSlider) => setTerm(valueSlider)}
             />
           </div>
