@@ -32,11 +32,8 @@ export default function Forms() {
   const nameHandler = (e) => {
     setName(e.target.value);
     const re = /^[a-zA-Zа-яА-Я'][a-zA-Zа-яА-Я-' ]+[a-zA-Zа-яА-Я']?$/u;
-    if (!re.test(String(e.target.value).toLowerCase())) {
-      setNameError('Incorrect name');
-    } else {
-      setNameError('');
-    }
+    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect name';
+    setNameError(error);
   }
 
   const ageHandler = (e) => {
