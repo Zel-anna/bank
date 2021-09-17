@@ -39,21 +39,15 @@ export default function Forms() {
   const ageHandler = (e) => {
     setAge(e.target.value);
     const re = /^[1-9]?[0-9]{1}$|^100$/;
-    if (!re.test(String(e.target.value).toLowerCase())) {
-      setAgeError('Incorrect age');
-    } else {
-      setAgeError('');
-    }
+    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect age';
+    setAgeError(error);
   }
 
   const emailHandler = (e) => {
     setEmail(e.target.value);
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!re.test(String(e.target.value).toLowerCase())) {
-      setEmailError('Incorrect e-mail');
-    } else {
-      setEmailError('');
-    }
+    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect e-mail';
+    setEmailError(error);
   }
 
 
