@@ -21,37 +21,59 @@ export default function Forms() {
   const [sliderTermValue, setTerm] = React.useState(defaultTermValue);
 
   const [valueName, setName] = React.useState(defaultName);
-  const [valueAge, setAge] = React.useState(defaultAge);
-  const [valueEmail, setEmail] = React.useState(defaultEmail);
-  const [emailDirty, setEmailDirty] = React.useState(false);
-  const [emailError, setEmailError] = React.useState('Email не может быть пустым');
+  const [nameError, setNameError] = React.useState('Name can not be empty');
 
-  const blurHandler = (event) => {
-    switch (event.target.name) {
-      case 'email':
-        setEmailDirty(true);
-        break;
-    }
+  const [valueAge, setAge] = React.useState(defaultAge);
+  const [ageError, setAgeError] = React.useState('Age can not be empty');
+
+  const [valueEmail, setEmail] = React.useState(defaultEmail);
+  const [emailError, setEmailError] = React.useState('Email can not be empty');
+
+  const nameHandler = (e) => {
+    setName(e.target.value);
+    const re = /^[a-zA-Zа-яА-Я'][a-zA-Zа-яА-Я-' ]+[a-zA-Zа-яА-Я']?$/u;
+    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect name';
+    setNameError(error);
   }
 
-  const submit = () => {
+  const ageHandler = (e) => {
+    setAge(e.target.value);
+    const re = /^[1-9]?[0-9]{1}$|^100$/;
+    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect age';
+    setAgeError(error);
+  }
+
+  const emailHandler = (e) => {
+    setEmail(e.target.value);
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect e-mail';
+    setEmailError(error);
+  }
+
+
+
+  const submit = (event) => {
     console.log("--> submit");
     console.log("Chosen loan offer = " + loanOffer);
     console.log("Chosen loan amount = " + sliderAmountValue);
     console.log("Chosen loan term = " + sliderTermValue);
     console.log("Chosen bank = " + arBanks[bank]);
-    console.log("Entered name = " + valueName);
-    console.log("Entered age = " + valueAge);
-    console.log("Entered Email = " + valueEmail);
+    console.log("Entered name = " + valueName + " " + nameError);
+    console.log("Entered age = " + valueAge + " " + ageError);
+    console.log("Entered Email = " + valueEmail + " " + emailError);
+
   };
   return (
     <Grid container spacing={2}>
       <Grid item md={4} >
         <h1>Requestor's data:</h1>
-        {(emailDirty && emailError) && <div style={{ color: 'red' }}>{emailError}</div>}
-        <TextField id="inputName" label="Name" variant="outlined" onChange={(event) => setName(event.target.value)} /><br /><br />
-        <TextField id="inputAge" label="Age" variant="outlined" onChange={(event) => setAge(event.target.value)} /><br /><br />
-        <TextField id="inputEmail" name="email" label="Email" variant="outlined" onBlur={e => blurHandler(e)} onChange={(event) => setEmail(event.target.value)} />
+
+        {(nameError) && <div style={{ color: 'red' }}>{nameError}</div>}
+        <TextField id="inputName" label="Name" variant="outlined" onChange={(event) => nameHandler(event)} /><br /><br />
+        {(ageError) && <div style={{ color: 'red' }}>{ageError}</div>}
+        <TextField id="inputAge" label="Age" variant="outlined" onChange={(event) => ageHandler(event)} /><br /><br />
+        {(emailError) && <div style={{ color: 'red' }}>{emailError}</div>}
+        <TextField id="inputEmail" name="email" label="Email" variant="outlined" onChange={(event) => emailHandler(event)} />
       </Grid>
       <Grid item md={4}>
         <div>
@@ -114,3 +136,6 @@ export default function Forms() {
 
   );
 }
+
+
+
