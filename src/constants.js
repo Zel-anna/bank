@@ -46,7 +46,7 @@ export const markLoanTerm = [
 
 
 export const defaultLoanOffer = "Cash";
-export const defaultBank = 0;
+export const defaultBank = "Sberbank";
 export const defaultAmountValue = 5000000;
 export const defaultTermValue = 15;
 export const defaultName = "";
