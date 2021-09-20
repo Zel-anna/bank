@@ -1,5 +1,5 @@
 import React from 'react';
-import { arBanks } from './fixtures.js';
+import { arBanks, arLoanOffers } from './fixtures.js';
 import { Slider, Select, MenuItem, Grid, TextField, Button, Menu } from '@material-ui/core';
 import {
   markLoanAmount, markLoanTerm, defaultLoanOffer, defaultBank, defaultAmountValue, defaultTermValue,
@@ -10,6 +10,11 @@ import {
 export default function Forms() {
 
   const [loanOffer, setLoanOffer] = React.useState(defaultLoanOffer);
+  const loanOffers = arLoanOffers.map((loanOffer, index) => {
+    return <MenuItem key={index} value={loanOffer}>{loanOffer}</MenuItem>;
+  });
+
+
   const [bank, setBank] = React.useState(defaultBank);
   const banks = arBanks.map((bank, index) => {
     return <MenuItem key={index} value={bank}>{bank}</MenuItem>;
@@ -78,16 +83,10 @@ export default function Forms() {
         <div>
           <h1 id="greeting">Choose your credit</h1>
           <p>Choose a loan offer:</p>
-
           <Select value={loanOffer}
             displayEmpty
             onChange={(event) => setLoanOffer(event.target.value)}>
-            <MenuItem value="" disabled>Select a loan offer</MenuItem>
-            <MenuItem value={"Cash"}>Cash</MenuItem>
-            <MenuItem value={"Credit cards"}>Credit cards</MenuItem>
-            <MenuItem value={"Mortgage"}>Mortgage</MenuItem>
-            <MenuItem value={"Car loan"}>Car loan</MenuItem>
-            <MenuItem value={"Business loan"}>Business loan</MenuItem>
+            {loanOffers}
           </Select>
           <br />
           <br />
