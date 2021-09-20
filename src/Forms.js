@@ -1,5 +1,6 @@
 import React from 'react';
-import { Slider, Select, MenuItem, Grid, TextField, Button } from '@material-ui/core';
+import { arBanks } from './fixtures.js';
+import { Slider, Select, MenuItem, Grid, TextField, Button, Menu } from '@material-ui/core';
 import {
   markLoanAmount, markLoanTerm, defaultLoanOffer, defaultBank, defaultAmountValue, defaultTermValue,
   defaultName, defaultAge, defaultEmail, stepAmount, minAmount, maxAmount, stepTerm, minTerm, maxTerm
@@ -10,6 +11,9 @@ export default function Forms() {
 
   const [loanOffer, setLoanOffer] = React.useState(defaultLoanOffer);
   const [bank, setBank] = React.useState(defaultBank);
+  const banks = arBanks.map((bank, index) => {
+    return <MenuItem key={index} value={bank}>{bank}</MenuItem>;
+  });
 
   const [sliderAmountValue, setAmount] = React.useState(defaultAmountValue);
 
@@ -116,10 +120,7 @@ export default function Forms() {
           <Select value={bank}
             displayEmpty
             onChange={(event) => setBank(event.target.value)}>
-            <MenuItem value="" disabled>Select a bank</MenuItem>
-            <MenuItem value={"Sberbank"}>Sberbank</MenuItem>
-            <MenuItem value={"VTB Bank"}>VTB Bank</MenuItem>
-            <MenuItem value={"Alfa-bank"}>Alfa-bank</MenuItem>
+            {banks}
           </Select>
           <br />
           <br />
