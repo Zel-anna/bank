@@ -25,13 +25,13 @@ export default function Forms() {
   const [sliderTermValue, setTerm] = React.useState(defaultTermValue);
 
   const [valueName, setName] = React.useState(defaultName);
-  const [nameError, setNameError] = React.useState('Name can not be empty');
+  const [nameError, setNameError] = React.useState('');
 
   const [valueAge, setAge] = React.useState(defaultAge);
-  const [ageError, setAgeError] = React.useState('Age can not be empty');
+  const [ageError, setAgeError] = React.useState('');
 
   const [valueEmail, setEmail] = React.useState(defaultEmail);
-  const [emailError, setEmailError] = React.useState('Email can not be empty');
+  const [emailError, setEmailError] = React.useState('');
 
   const nameHandler = (e) => {
     setName(e.target.value);
@@ -42,8 +42,7 @@ export default function Forms() {
 
   const ageHandler = (e) => {
     setAge(e.target.value);
-    const re = /^[1-9]?[0-9]{1}$|^100$/;
-    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect age';
+    const error = (e.target.value > 17 && e.target.value < 121) ? '' : 'Incorrect age';
     setAgeError(error);
   }
 
