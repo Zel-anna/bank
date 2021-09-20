@@ -1,6 +1,6 @@
 import React from 'react';
-import { Slider, Select, MenuItem, Grid, TextField, Button } from '@material-ui/core';
-import { arBanks } from './fixtures.js';
+import { arBanks, arLoanOffers } from './fixtures.js';
+import { Slider, Select, MenuItem, Grid, TextField, Button, Menu } from '@material-ui/core';
 import {
   markLoanAmount, markLoanTerm, defaultLoanOffer, defaultBank, defaultAmountValue, defaultTermValue,
   defaultName, defaultAge, defaultEmail, stepAmount, minAmount, maxAmount, stepTerm, minTerm, maxTerm
@@ -10,10 +10,14 @@ import {
 export default function Forms() {
 
   const [loanOffer, setLoanOffer] = React.useState(defaultLoanOffer);
-  const [bank, setBank] = React.useState(defaultBank);
+  const loanOffers = arLoanOffers.map((loanOffer, index) => {
+    return <MenuItem key={index} value={loanOffer}>{loanOffer}</MenuItem>;
+  });
 
-  const banks = arBanks.map((text, index) => {
-    return <option key={index} value={index}>{text}</option>;
+
+  const [bank, setBank] = React.useState(defaultBank);
+  const banks = arBanks.map((bank, index) => {
+    return <MenuItem key={index} value={bank}>{bank}</MenuItem>;
   });
 
   const [sliderAmountValue, setAmount] = React.useState(defaultAmountValue);
@@ -57,7 +61,7 @@ export default function Forms() {
     console.log("Chosen loan offer = " + loanOffer);
     console.log("Chosen loan amount = " + sliderAmountValue);
     console.log("Chosen loan term = " + sliderTermValue);
-    console.log("Chosen bank = " + arBanks[bank]);
+    console.log("Chosen bank = " + bank);
     console.log("Entered name = " + valueName + " " + nameError);
     console.log("Entered age = " + valueAge + " " + ageError);
     console.log("Entered Email = " + valueEmail + " " + emailError);
@@ -79,16 +83,10 @@ export default function Forms() {
         <div>
           <h1 id="greeting">Choose your credit</h1>
           <p>Choose a loan offer:</p>
-
           <Select value={loanOffer}
             displayEmpty
             onChange={(event) => setLoanOffer(event.target.value)}>
-            <MenuItem value="" disabled>Select a loan offer</MenuItem>
-            <MenuItem value={"Cash"}>Cash</MenuItem>
-            <MenuItem value={"Credit cards"}>Credit cards</MenuItem>
-            <MenuItem value={"Mortgage"}>Mortgage</MenuItem>
-            <MenuItem value={"Car loan"}>Car loan</MenuItem>
-            <MenuItem value={"Business loan"}>Business loan</MenuItem>
+            {loanOffers}
           </Select>
           <br />
           <br />
@@ -118,13 +116,12 @@ export default function Forms() {
             />
           </div>
           <p>Choose a bank:</p>
-          <select value={bank} onChange={(event) => setBank(event.target.value)}>
+          <Select value={bank}
+            displayEmpty
+            onChange={(event) => setBank(event.target.value)}>
             {banks}
-          </select>
-
+          </Select>
           <br />
-
-
           <br />
           <br />
 
