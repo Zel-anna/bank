@@ -23,15 +23,16 @@ export default function Forms() {
   const [sliderAmountValue, setAmount] = React.useState(defaultAmountValue);
 
   const [sliderTermValue, setTerm] = React.useState(defaultTermValue);
+  const [termError, setTermError] = React.useState('');
 
   const [valueName, setName] = React.useState(defaultName);
-  const [nameError, setNameError] = React.useState('Name can not be empty');
+  const [nameError, setNameError] = React.useState('');
 
   const [valueAge, setAge] = React.useState(defaultAge);
-  const [ageError, setAgeError] = React.useState('Age can not be empty');
+  const [ageError, setAgeError] = React.useState('');
 
   const [valueEmail, setEmail] = React.useState(defaultEmail);
-  const [emailError, setEmailError] = React.useState('Email can not be empty');
+  const [emailError, setEmailError] = React.useState('');
 
   const nameHandler = (e) => {
     setName(e.target.value);
@@ -42,8 +43,7 @@ export default function Forms() {
 
   const ageHandler = (e) => {
     setAge(e.target.value);
-    const re = /^[1-9]?[0-9]{1}$|^100$/;
-    const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect age';
+    const error = (e.target.value > 17 && e.target.value < 121) ? '' : 'Incorrect age';
     setAgeError(error);
   }
 
@@ -54,13 +54,19 @@ export default function Forms() {
     setEmailError(error);
   }
 
+  const termHandler = (_, valueSlider) => {
+    //setTerm(e.target.value);
+    setTerm(valueSlider);
+    const error = (valueSlider !== 0) ? '' : 'Incorrect loan term';
+    setTermError(error);
+  }
 
 
   const submit = (event) => {
     console.log("--> submit");
     console.log("Chosen loan offer = " + loanOffer);
     console.log("Chosen loan amount = " + sliderAmountValue);
-    console.log("Chosen loan term = " + sliderTermValue);
+    console.log("Chosen loan term = " + sliderTermValue + " " + termError);
     console.log("Chosen bank = " + bank);
     console.log("Entered name = " + valueName + " " + nameError);
     console.log("Entered age = " + valueAge + " " + ageError);
@@ -104,6 +110,7 @@ export default function Forms() {
             />
           </div>
           <p>Loan term (years):</p>
+          {(termError) && <div style={{ color: 'red' }}>{termError}</div>}
           <div className="slider">
             <Slider
               defaultValue={defaultTermValue}
@@ -112,7 +119,8 @@ export default function Forms() {
               marks={markLoanTerm}
               min={minTerm}
               max={maxTerm}
-              onChange={(_, valueSlider) => setTerm(valueSlider)}
+              //onChange={(_, valueSlider) => setTerm(valueSlider)}  (event) => ageHandler(event)
+              onChange={(_, valueSlider) => termHandler(_, valueSlider)}
             />
           </div>
           <p>Choose a bank:</p>
