@@ -1,65 +1,49 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { defaultName, defaultAge, defaultEmail } from './constants.js';
 
-export function Step1() {
-    const [valueName, setName] = React.useState(defaultName);
-    const [nameError, setNameError] = React.useState('notChanged');
-
-    const [valueAge, setAge] = React.useState(defaultAge);
-    const [ageError, setAgeError] = React.useState('notChanged');
-
-    const [valueEmail, setEmail] = React.useState(defaultEmail);
-    const [emailError, setEmailError] = React.useState('notChanged');
-
-    const [showNext, setShowNext] = React.useState(false);
-
+export function Step1(props) {
+    const defaultState = {
+        name: { error: 'notChanged', value: defaultName },
+        age: { error: 'notChanged', value: defaultAge },
+        email: { error: 'notChanged', value: defaultEmail }
+    }
+    const [step1State, setStep1State] = useState(defaultState);
 
     const nameHandler = (e) => {
-        setName(e.target.value);
         console.log(e.target.value);
         const re = /^[a-zA-Zа-яА-Я'][a-zA-Zа-яА-Я-' ]+[a-zA-Zа-яА-Я']?$/u;
         const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect name';
-        setNameError(error);
-        //updateNext();
-
+        setStep1State({ ...step1State, ...{ name: { error: error, value: e.target.value } } });
     }
 
     const ageHandler = (e) => {
-        setAge(e.target.value);
         console.log(e.target.value);
         const error = (e.target.value > 17 && e.target.value < 121) ? '' : 'Incorrect age';
-        setAgeError(error);
-        //updateNext();
+        setStep1State({ ...step1State, ...{ age: { error: error, value: e.target.value } } });
+
     }
 
     const emailHandler = (e) => {
-        setEmail(e.target.value);
         console.log(e.target.value);
         const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const error = re.test(String(e.target.value).toLowerCase()) ? '' : 'Incorrect e-mail';
-        setEmailError(error);
-        updateNext();
-        /* const invalidFields = nameError || ageError || emailError;
-        setIsEnabledNext(!invalidFields); */
-    }
-    const updateNext = () => {
-        console.log("nameError: " + nameError);
-        console.log("ageError: " + ageError);
-        console.log("emailError: " + emailError);
-        console.log("nameError || ageError || emailError: " + nameError + "||" + ageError + "||" + emailError);
-        setShowNext(!(nameError || ageError || emailError));
-        console.log("showNext = " + showNext);
+        setStep1State({ ...step1State, ...{ email: { error: error, value: e.target.value } } });
+
     }
 
+    const nameError = step1State.name.error;
+    const ageError = step1State.age.error;
+    const emailError = step1State.email.error;
+
+    const showNext = !(nameError || ageError || emailError);
+
+    console.log("showNext = " + showNext);
+
+
     const next = () => {
-        //const error = nameError || ageError || emailError;
-        //setIsEnabledNext(!error);
-        //const showStep1 = !!(nameError || ageError || emailError);
-        //showStep1 && <Step1 />;
         console.log("--> next");
-        //console.log("showNext = " + showNext);
-        //console.log("showStep1 = " + showStep1);
+        props.cb(showNext);
     };
 
     return <div>
