@@ -8,7 +8,7 @@ import {
 } from './constants.js';
 
 
-export function Step2() {
+export function Step2(props) {
     const [loanOffer, setLoanOffer] = React.useState(defaultLoanOffer);
     const loanOffers = arLoanOffers.map((loanOffer, index) => {
         return <MenuItem key={index} value={loanOffer}>{loanOffer}</MenuItem>;
@@ -32,8 +32,16 @@ export function Step2() {
         setTermError(error);
     }
 
+    const showSubmit = !termError;
+    console.log("showSubmit = " + showSubmit);
 
-    const submit = (event) => {
+    const back = () => {
+        console.log("--> back");
+        props.onBackStepClicked('step1');
+
+    }
+
+    const submit = () => {
         console.log("--> submit");
         console.log("Chosen loan offer = " + loanOffer);
         console.log("Chosen loan amount = " + sliderAmountValue);
@@ -89,8 +97,8 @@ export function Step2() {
         <br />
         <br />
         <br />
-        <Button variant="contained" color="primary" >Back</Button>
-        <Button variant="contained" color="primary" onClick={submit} disabled="true">Submit</Button>
+        <Button variant="contained" color="primary" onClick={back} >Back</Button>
+        <Button variant="contained" color="primary" onClick={submit} disabled={!showSubmit} >Submit</Button>
 
 
 

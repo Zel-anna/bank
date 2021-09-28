@@ -38,12 +38,13 @@ export function Step1(props) {
 
     const showNext = !(nameError || ageError || emailError);
 
-    console.log("showNext = " + showNext);
+    //console.log("showNext = " + showNext);
 
 
     const next = () => {
         console.log("--> next");
-        props.cb(showNext);
+        props.onValidityChanged(showNext);
+        props.onNextStepClicked('step2');
     };
 
     return <div>
