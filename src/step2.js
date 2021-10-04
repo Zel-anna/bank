@@ -1,6 +1,5 @@
-import React from 'react';
+import { React, useState } from 'react';
 import { arBanks, arLoanOffers } from './fixtures.js';
-import { valueName, valueAge, valueEmail } from './step1.js';
 import { Slider, Select, MenuItem, Button } from '@material-ui/core';
 import {
     markLoanAmount, markLoanTerm, defaultLoanOffer, defaultBank, defaultAmountValue, defaultTermValue,
@@ -9,24 +8,22 @@ import {
 
 
 export function Step2(props) {
-    const [loanOffer, setLoanOffer] = React.useState(defaultLoanOffer);
+    const [loanOffer, setLoanOffer] = useState(defaultLoanOffer);
     const loanOffers = arLoanOffers.map((loanOffer, index) => {
         return <MenuItem key={index} value={loanOffer}>{loanOffer}</MenuItem>;
     });
 
 
-    const [bank, setBank] = React.useState(defaultBank);
+    const [bank, setBank] = useState(defaultBank);
     const banks = arBanks.map((bank, index) => {
         return <MenuItem key={index} value={bank}>{bank}</MenuItem>;
     });
 
-    const [sliderAmountValue, setAmount] = React.useState(defaultAmountValue);
-
-    const [sliderTermValue, setTerm] = React.useState(defaultTermValue);
-    const [termError, setTermError] = React.useState('');
+    const [sliderAmountValue, setAmount] = useState(defaultAmountValue);
+    const [sliderTermValue, setTerm] = useState(defaultTermValue);
+    const [termError, setTermError] = useState('');
 
     const termHandler = (_, valueSlider) => {
-        //setTerm(e.target.value);
         setTerm(valueSlider);
         const error = (valueSlider !== 0) ? '' : 'Incorrect loan term';
         setTermError(error);
@@ -34,14 +31,12 @@ export function Step2(props) {
 
     const showSubmit = !termError;
     console.log("showSubmit = " + showSubmit);
-
-    const back = () => {
+    const handleBackClicked = () => {
         console.log("--> back");
-        props.onBackStepClicked('step1');
-
+        props.onBackClicked();
     }
 
-    const submit = () => {
+    const handleSubmitClicked = () => {
         console.log("--> submit");
         console.log("Chosen loan offer = " + loanOffer);
         console.log("Chosen loan amount = " + sliderAmountValue);
@@ -52,7 +47,8 @@ export function Step2(props) {
         //console.log("Entered Email = " + valueEmail + " " + emailError);
 
     }
-    return <div>
+
+    return <div className={(props.formStep === 'step2') ? '' : 'hidden'}>
         <h1 id="greeting">Choose your credit</h1>
         <p>Choose a loan offer:</p>
         <Select value={loanOffer}
@@ -97,8 +93,8 @@ export function Step2(props) {
         <br />
         <br />
         <br />
-        <Button variant="contained" color="primary" onClick={back} >Back</Button>
-        <Button variant="contained" color="primary" onClick={submit} disabled={!showSubmit} >Submit</Button>
+        <Button variant="contained" color="primary" onClick={handleBackClicked} >Back</Button>
+        <Button variant="contained" color="primary" onClick={handleSubmitClicked} disabled={!showSubmit} >Submit</Button>
 
 
 
