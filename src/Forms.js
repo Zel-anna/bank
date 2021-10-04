@@ -5,25 +5,19 @@ import { Grid } from '@material-ui/core';
 
 
 export default function Forms() {
-
-  const [isStep1Valid, setStep1Valid] = useState(false);
-  const [userStepSelected, setUserStepSelected] = useState(null);
+  const [formStep, setFormStep] = useState('step1');
   return (
     <Grid container spacing={2}>
       <Grid item md={4} >
-        {(!(isStep1Valid && (userStepSelected === null || userStepSelected === 'step2')))
-          && <Step1 onValidityChanged={(isValid) => setStep1Valid(isValid)}
-            onNextStepClicked={(step) => setUserStepSelected(step)} />}
+        <Step1
+          onNextClicked={() => setFormStep('step2')}
+          formStep={formStep} />
       </Grid>
       <Grid item md={4}>
-        {(isStep1Valid && (userStepSelected === null || userStepSelected === 'step2'))
-          && <Step2 onBackStepClicked={(step) => setUserStepSelected(step)} />}
+        <Step2
+          onBackClicked={() => setFormStep('step1')}
+          formStep={formStep} />
       </Grid>
-
     </Grid>
-
   );
 }
-
-
-

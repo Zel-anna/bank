@@ -38,16 +38,12 @@ export function Step1(props) {
 
     const showNext = !(nameError || ageError || emailError);
 
-    //console.log("showNext = " + showNext);
 
-
-    const next = () => {
+    const handleNextClicked = () => {
         console.log("--> next");
-        props.onValidityChanged(showNext);
-        props.onNextStepClicked('step2');
+        props.onNextClicked();
     };
-
-    return <div>
+    return <div className={props.formStep === 'step1' ? '' : 'hidden'}>
         <h1>Requestor's data:</h1>
 
         {(nameError) && (nameError !== 'notChanged') && <div style={{ color: 'red' }}>{nameError}</div>}
@@ -58,7 +54,7 @@ export function Step1(props) {
         <TextField id="inputEmail" name="email" label="Email" variant="outlined" onChange={(event) => emailHandler(event)} />
         <br />
         <br />
-        <Button variant="contained" color="primary" disabled={!showNext} onClick={next}>Next</Button>
+        <Button variant="contained" color="primary" disabled={!showNext} onClick={handleNextClicked}>Next</Button>
 
     </div>;
 }
